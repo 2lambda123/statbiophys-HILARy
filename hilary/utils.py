@@ -103,15 +103,11 @@ def preprocess(
     df["cdr3_length"] = df["cdr3"].str.len()
     if "alt_sequence_alignment" not in df.columns:
         df.dropna(subset=["v_sequence_alignment", "j_sequence_alignment"], inplace=True)
-        df["alt_sequence_alignment"] = (
-            df["v_sequence_alignment"] + df["j_sequence_alignment"]
-        )
+        df["alt_sequence_alignment"] = df["v_sequence_alignment"] + df["j_sequence_alignment"]
 
     if "alt_germline_alignment" not in df.columns:
         df.dropna(subset=["v_germline_alignment", "j_germline_alignment"], inplace=True)
-        df["alt_germline_alignment"] = (
-            df["v_germline_alignment"] + df["j_germline_alignment"]
-        )
+        df["alt_germline_alignment"] = df["v_germline_alignment"] + df["j_germline_alignment"]
 
     df["mutation_count"] = applyParallel(
         df.groupby(["v_gene", "j_gene", "cdr3_length"]),
@@ -132,18 +128,10 @@ def create_classes(df: pd.DataFrame) -> pd.Dataframe:
         pd.DataFrame: Dataframe with classes.
     """
     classes = (
-        df.groupby(["v_gene", "j_gene", "cdr3_length"])
-        .size()
-        .to_frame("sequence_count")
+        df.groupby(["v_gene", "j_gene", "cdr3_length"]).size().to_frame("sequence_count")
     ).reset_index()
-    classes["pair_count"] = (
-        classes["sequence_count"].apply(lambda x: binom(x, 2)).astype(int)
-    )
-    l_classes = (
-        classes.groupby("cdr3_length")[["sequence_count", "pair_count"]]
-        .sum()
-        .reset_index()
-    )
+    classes["pair_count"] = classes["sequence_count"].apply(lambda x: binom(x, 2)).astype(int)
+    l_classes = classes.groupby("cdr3_length")[["sequence_count", "pair_count"]].sum().reset_index()
     l_classes["v_gene"] = "None"
     l_classes["j_gene"] = "None"
     classes = pd.concat([classes, l_classes], ignore_index=True).sort_values(

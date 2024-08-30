@@ -96,9 +96,7 @@ class EM:
         if self.positives == "geometric":
             return rho / (mu + 1) * (mu / (mu + 1)) ** x + (1 - rho) * self.const_p0[x]
         if self.positives == "poisson":
-            return (
-                rho * mu**x * np.exp(-mu) / factorial(x) + (1 - rho) * self.const_p0[x]
-            )
+            return rho * mu**x * np.exp(-mu) / factorial(x) + (1 - rho) * self.const_p0[x]
 
     def error(self, theta):
         """Estimate goodness of fit

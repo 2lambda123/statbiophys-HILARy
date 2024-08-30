@@ -1,7 +1,8 @@
 from __future__ import annotations
 
-from hilary import __version__
 from setuptools import find_packages, setup
+
+from hilary import __version__
 
 setup(
     install_requires=[
