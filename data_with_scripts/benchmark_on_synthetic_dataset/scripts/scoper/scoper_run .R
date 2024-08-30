@@ -11,4 +11,3 @@ for(file in files) {
   print(time_taken)
   write.csv(dbsc@db, paste("data/scoper_benchmark/", file, sep=""))
 }
-
