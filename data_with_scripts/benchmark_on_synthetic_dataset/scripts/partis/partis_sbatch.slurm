@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 #SBATCH --nodes=1
 #SBATCH --exclude=zuzia,node02,node03 # uses only 1 node
 #SBATCH --time=100:00:00
@@ -20,5 +20,3 @@ do
     new_file="data/partis_benchmark/${base_name}.yaml";
     partis/bin/partis partition --infname "$fasta_file" --outfname "$new_file";
 done
-
-

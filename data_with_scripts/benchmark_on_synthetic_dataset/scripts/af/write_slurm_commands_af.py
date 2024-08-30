@@ -1,8 +1,6 @@
 from pathlib import Path
 
-current_folder = (
-    "/home/gathenes/gitlab/HILARy/data_with_scripts/benchmark_on_synthetic_dataset/"
-)
+current_folder = "/home/gathenes/gitlab/HILARy/data_with_scripts/benchmark_on_synthetic_dataset/"
 
 with open("commands_af.txt", "w") as f:
     for set in range(2, 6):

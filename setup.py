@@ -1,11 +1,12 @@
 from __future__ import annotations
 
-from hilary import __version__
 from setuptools import find_packages, setup
+
+from hilary import __version__
 
 setup(
     install_requires=[
-        "setuptools>=56,<57",
+        "setuptools>=56,<75",
         "numpy>=1.20.0,<2",
         "openpyxl>=3.1,<4",
         "pandas>=2.1,<2.2",

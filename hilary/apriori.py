@@ -70,9 +70,7 @@ class Apriori:
             )
         self.classes = pd.DataFrame()
 
-    def preprocess(
-        self, df: pd.DataFrame, df_kappa: pd.DataFrame | None = None
-    ) -> pd.DataFrame:
+    def preprocess(self, df: pd.DataFrame, df_kappa: pd.DataFrame | None = None) -> pd.DataFrame:
         """Remove non productive sequences from dataframe.
 
         If df_kappa is not null then group VH, JH, VK and JK genes together and concatenate heavy
@@ -223,9 +221,7 @@ class Apriori:
         ].min(axis=1)
         self.classes["error_geo"] = parameters["error_geo"]
         self.classes["error_poisson"] = parameters["error_poisson"]
-        self.classes["mean_distance"] = (
-            parameters["mu_poisson"] / self.classes["cdr3_length"]
-        )
+        self.classes["mean_distance"] = parameters["mu_poisson"] / self.classes["cdr3_length"]
         self.classes["effective_prevalence"] = self.classes["prevalence"].fillna(0.2)
         self.classes["effective_mean_distance"] = self.classes["mean_distance"].fillna(
             0.04,
@@ -255,9 +251,7 @@ class Apriori:
         mus = ldf["effective_mean_distance"] * l
         bins = np.arange(l + 1)
         cdf0 = self.cdfs.loc[self.cdfs["l"] == l].values[0, 1 : l + 2]
-        cdf1 = (
-            np.array([mu**bins * np.exp(-mu) for mu in mus]) / factorial(bins)
-        ).cumsum(axis=1)
+        cdf1 = (np.array([mu**bins * np.exp(-mu) for mu in mus]) / factorial(bins)).cumsum(axis=1)
         ps = cdf0 / cdf1
         t_sens = (cdf1 < self.sensitivity).sum(axis=1)
         t_prec = (

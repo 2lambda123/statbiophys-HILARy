@@ -54,17 +54,13 @@ def specificity_comp(table_clone_list, clusters_cosine_full, M):
         sum_pairs = sum_pairs + list_comb.__len__()
         for i, j in list_comb:
 
-            per_clone_score = per_clone_score + (
-                clusters_cosine_full[i] != clusters_cosine_full[j]
-            )
+            per_clone_score = per_clone_score + (clusters_cosine_full[i] != clusters_cosine_full[j])
         sum_clustered_pairs = sum_clustered_pairs + per_clone_score
     specificity = sum_clustered_pairs / sum_pairs
     return specificity
 
 
-def plot_mean_and_CI(
-    x_vec, mean, lb, ub, color_mean=None, color_shading=None, name1="b"
-):
+def plot_mean_and_CI(x_vec, mean, lb, ub, color_mean=None, color_shading=None, name1="b"):
     # plt.set_facecolor('w')
     # plot the shaded range of the confidence intervals
     plt.style.use("_classic_test")
@@ -87,8 +83,7 @@ def PPV_comp_ig(table_clone_list, clusters_cosine_full):
             per_clone_score = 0
             for j in range(0, combinations.__len__()):
                 per_clone_score = per_clone_score + (
-                    table_clone_list[combinations[j][0]]
-                    == table_clone_list[combinations[j][1]]
+                    table_clone_list[combinations[j][0]] == table_clone_list[combinations[j][1]]
                 )
             sum_clustered_pairs = sum_clustered_pairs + per_clone_score
     PPV = sum_clustered_pairs / sum_pairs
@@ -115,9 +110,7 @@ def truncate_sequence_v(table, W_l=200, E_l=0):
 
     for i in range(0, M):
         s_l = table[i].__len__()
-        table_last = table_last.append(
-            {"end": table[i][s_l - W_l : s_l - E_l]}, ignore_index=True
-        )
+        table_last = table_last.append({"end": table[i][s_l - W_l : s_l - E_l]}, ignore_index=True)
     return table_last
 
 
@@ -269,19 +262,13 @@ def vj_cell_extract(table, M):
     for i in range(0, table.__len__()):
         table_v = table_v.append({"V": table.V_CALL[i][0:15]}, ignore_index=True)
         table_j = table_j.append({"J": table.J_CALL[i][0:13]}, ignore_index=True)
-    J_cell = np.unique(
-        table_j.J, return_index=True, return_inverse=True, return_counts=True
-    )
-    V_cell = np.unique(
-        table_v.V, return_index=True, return_inverse=True, return_counts=True
-    )
+    J_cell = np.unique(table_j.J, return_index=True, return_inverse=True, return_counts=True)
+    V_cell = np.unique(table_v.V, return_index=True, return_inverse=True, return_counts=True)
     table_vj = pd.DataFrame(columns=["VJ"])
     for i in range(0, M):
         temp = table_v.V[i] + table_j.J[i]
         table_vj = table_vj.append({"VJ": temp}, ignore_index=True)
-    VJ_cell = np.unique(
-        table_vj.VJ, return_index=True, return_inverse=True, return_counts=True
-    )
+    VJ_cell = np.unique(table_vj.VJ, return_index=True, return_inverse=True, return_counts=True)
     return V_cell, J_cell, VJ_cell
 
 
@@ -503,9 +490,7 @@ def truncate_sequence_rs(table, W_l=200):
 
     for i in range(0, M):
         s_l = table.values[i].__len__()
-        table_last = table_last.append(
-            {"end": table.values[i][:W_l]}, ignore_index=True
-        )
+        table_last = table_last.append({"end": table.values[i][:W_l]}, ignore_index=True)
     return table_last
 
 
@@ -654,8 +639,7 @@ def PPV_comp(table_clone_list, clusters_cosine_full):
             per_clone_score = 0
             for j in range(0, combinations.__len__()):
                 per_clone_score = per_clone_score + (
-                    table_clone_list[combinations[j][0]]
-                    == table_clone_list[combinations[j][1]]
+                    table_clone_list[combinations[j][0]] == table_clone_list[combinations[j][1]]
                 )
             sum_clustered_pairs = sum_clustered_pairs + per_clone_score
     PPV = sum_clustered_pairs / sum_pairs
@@ -707,20 +691,16 @@ def spec_vs_thresh_eval(
     spec_arr_var_b = []
     for per in np.arange(0.1, 10, 0.1):
         thresh_cosine_b = np.percentile(dist2nearestcosine_neg_b, per)
-        thresh_cosine_b = thresh_cosine_b * (
-            1 - 0.09 * np.log(table_last.shape[0] / 5000)
+        thresh_cosine_b = thresh_cosine_b * (1 - 0.09 * np.log(table_last.shape[0] / 5000))
+        specificity_b = np.sum(dist2nearestcosine[labels_list == 0] > thresh_cosine_b) / sum(
+            labels_list == 0
         )
-        specificity_b = np.sum(
-            dist2nearestcosine[labels_list == 0] > thresh_cosine_b
-        ) / sum(labels_list == 0)
 
         thresh_cosine_a = np.percentile(dist2nearestcosine_neg_a, per)
-        thresh_cosine_a = thresh_cosine_a * (
-            1 - 0.09 * np.log(table_last.shape[0] / 5000)
+        thresh_cosine_a = thresh_cosine_a * (1 - 0.09 * np.log(table_last.shape[0] / 5000))
+        specificity_a = np.sum(dist2nearestcosine[labels_list == 0] > thresh_cosine_a) / sum(
+            labels_list == 0
         )
-        specificity_a = np.sum(
-            dist2nearestcosine[labels_list == 0] > thresh_cosine_a
-        ) / sum(labels_list == 0)
         spec_arr_var_b.append(specificity_b)
         spec_arr_var_a.append(specificity_a)
     return spec_arr_var_a, spec_arr_var_b
@@ -766,9 +746,7 @@ def get_lev_dist2nearest(table_full, clone_list, l):
                     d_ij
                     - np.abs(
                         table_full.SEQUENCE_INPUT[clone_indices[min_group[i]]].__len__()
-                        - table_full.SEQUENCE_INPUT[
-                            clone_indices[maj_group[j]]
-                        ].__len__()
+                        - table_full.SEQUENCE_INPUT[clone_indices[maj_group[j]]].__len__()
                     )
                 )
                 / (
