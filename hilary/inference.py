@@ -266,7 +266,13 @@ class HILARy:
     def get_xy_thresholds(self, df):
         alignment_length = len(df["alt_sequence_alignment"].values[0])
         mutations_grouped = []
-        for (v_gene, j_gene, cdr3_length, prevalence, class_id,) in tqdm(
+        for (
+            v_gene,
+            j_gene,
+            cdr3_length,
+            prevalence,
+            class_id,
+        ) in tqdm(
             self.classes[
                 [
                     "v_gene",
